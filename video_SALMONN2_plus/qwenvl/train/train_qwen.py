@@ -399,7 +399,7 @@ def train(attn_implementation="flash_attention_2"):
                     with torch.no_grad():
                         outputs = model.generate(
                             **inputs,
-                            max_new_tokens=1024,
+                            max_new_tokens=2048,
                             do_sample=data_args.do_sample,
                             top_p=0.9)
                     output_trimmed = outputs[0, len(inputs["input_ids"][0]):]

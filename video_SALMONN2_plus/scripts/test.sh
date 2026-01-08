@@ -30,6 +30,7 @@ LORA_CKPT=No
 NUM_SAMPLE=1
 DO_SAMPLE=False
 NO_AUDIO=False
+MAX_NEW_TOKENS=1024
 
 mkdir -p output
 mkdir -p dataset
@@ -62,6 +63,7 @@ while [[ "$#" -gt 0 ]]; do
         --do_sample) DO_SAMPLE=True ;;
         --num_sample) NUM_SAMPLE="$2"; shift ;;
         --no_audio) NO_AUDIO=True ;;
+        --max_new_tokens) MAX_NEW_TOKENS="$2"; shift ;;
         *) echo "Unknown parameter passed: $1"; exit 1 ;;
     esac
     shift
@@ -124,7 +126,8 @@ for i in $(seq 0 $((${ARNOLD_WORKER_GPU}-1))); do
             --lora_ckpt $LORA_CKPT \
             --num_sample $NUM_SAMPLE \
             --do_sample $DO_SAMPLE \
-            --no_audio $NO_AUDIO &
+            --no_audio $NO_AUDIO \
+            --max_new_tokens $MAX_NEW_TOKENS &
 done
 
 wait
