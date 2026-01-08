@@ -7,3 +7,4 @@ git branch -M main
 git push -u origin main
 
 git config --global user.email "changbeendata@gmail.com"
+git config --global user.name "changbeendata"
