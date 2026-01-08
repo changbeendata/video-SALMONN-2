@@ -411,6 +411,19 @@ def train(attn_implementation="flash_attention_2"):
                             res_i["pred"].append(output_text)
                         else:
                             res_i["pred"] = [output_text]
+                """ if needed to clean up GPU memory
+                    # Clean up GPU memory after generation
+                    del outputs
+                    torch.cuda.empty_cache()
+                
+                # Clean up input tensors
+                for k, v in inputs.items():
+                    if isinstance(v, torch.Tensor):
+                        del v
+                del inputs
+                torch.cuda.empty_cache()
+                """
+                
                 if not res_i["should_use"]:
                     continue
                 result.append(res_i)
