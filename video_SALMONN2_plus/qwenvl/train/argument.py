@@ -48,7 +48,6 @@ class DataArguments:
     run_test: bool = field(default=False)
     do_sample: bool = field(default=False)
     num_sample: int = field(default=1)
-    max_new_tokens: int = field(default=1024)
     train_type: str = field(default="sft")
     feature_size: int = field(default=128)
     chunk_length: int = field(default=30)
