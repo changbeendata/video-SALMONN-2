@@ -73,7 +73,13 @@ HOST_ADDR=METIS_WORKER_${ARNOLD_ID}_HOST
 
 # ${ARNOLD_WORKER_GPU}
 for i in $(seq 0 $((${ARNOLD_WORKER_GPU}-1))); do
-    CUDA_VISIBLE_DEVICES=$i torchrun --nproc_per_node=1 --nnodes=1 --node_rank=0 --master_addr="${!HOST_ADDR}" --master_port=$((12800 + i + 8 * ARNOLD_ID)) \
+    # Use externally set CUDA_VISIBLE_DEVICES if available, otherwise use $i
+    if [ -z "$CUDA_VISIBLE_DEVICES" ]; then
+        CUDA_DEVICE=$i
+    else
+        CUDA_DEVICE=$CUDA_VISIBLE_DEVICES
+    fi
+    CUDA_VISIBLE_DEVICES=$CUDA_DEVICE torchrun --nproc_per_node=1 --nnodes=1 --node_rank=0 --master_addr="${!HOST_ADDR}" --master_port=$((12800 + i + 8 * ARNOLD_ID)) \
         qwenvl/train/train_qwen.py \
             --model_base $MODEL_BASE \
             --run_test True \
